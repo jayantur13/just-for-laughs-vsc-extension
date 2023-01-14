@@ -1,9 +1,7 @@
 <p align="center">
   <img alt="Logo" src="https://media.tenor.com/4gch8O6_zDcAAAAC/spongebob-evil.gif" width="250px" height="200px">
   <p align="center">
-    <img alt="Codecov" src="https://img.shields.io/codecov/c/github/jayantur13/just-for-laughs-vsc-extension?label=codecov&logo=codecov&style=flat-square">
     <img alt="Code-style" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square">
-    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/jayantur13/just-for-laughs-vsc-extension/test.yml?branch=master">
     <a href="https://github.com/jayantur13/just-for-laughs-vsc-extension/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/jayantur13/just-for-laughs-vsc-extension?style=flat-square"></a>
     <a href="https://github.com/jayantur13/just-for-laughs-vsc-extension/pulls"><img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/jayantur13/just-for-laughs-vsc-extension?style=flat-square"></a>
     <a href="https://github.com/jayantur13/just-for-laughs-vsc-extension/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/jayantur13/just-for-laughs-vsc-extension?style=flat-square"></a>
@@ -59,6 +57,7 @@ Please adhere to this project's [Code Of Conduct](https://github.com/jayantur13/
 ## Issues
 
 - Need to manually close the meme tab(s) (Not a bug,VSCode api limitation)
+- Write tests the ones present here sometimes fail (Contribute!)
 
 ## Support the project
 
