@@ -1,0 +1,26 @@
+*.vsix
+node_modules
+package-lock.json
+*.lock
+.idea/
+
+# IDE
+.vscode
+*.code-workspace
+
+# testing
+.vscode-test/
+coverage
+.nyc_output
+
+# misc
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
