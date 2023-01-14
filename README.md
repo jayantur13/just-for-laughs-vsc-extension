@@ -24,7 +24,7 @@
 - You may use keybinding Ctrl+P to get a meme (changeable)
 
 > Demo
-> <img alt="demo" src="https://github.com/jayantur13/just-for-laughs-vsc-extension/tree/master/src/demo.gif">
+> <img src="https://i.ibb.co/dGjh04B/demo.gif" alt="My cool logo"/>
 
 ## Extension Settings
 
