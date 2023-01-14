@@ -24,7 +24,7 @@
 - You may use keybinding Ctrl+P to get a meme (changeable)
 
 > Demo
-> <img src="https://i.ibb.co/dGjh04B/demo.gif" alt="My cool logo"/>
+<img src="https://i.ibb.co/dGjh04B/demo.gif" alt="My cool logo"/>
 
 ## Extension Settings
 
