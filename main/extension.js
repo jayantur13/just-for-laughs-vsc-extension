@@ -10,6 +10,7 @@ const {
 } = require("vscode");
 const { api } = require("./api");
 let i = 0;
+let panel;
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -18,11 +19,14 @@ let i = 0;
  * @param {vscode.ExtensionContext} context
  */
 async function activate(context) {
-  const config = workspace.getConfiguration("justforlaughs.ext");
-  //In case if justforlaughs.get.URL: "" set it to default one
+  const config = workspace.getConfiguration(
+    "justforlaughs.ext",
+    ConfigurationTarget.Global
+  );
+  //In case if justforlaughs.get.subredditURL: "" set it to default one
   if (config.has("subredditURL") && config.get("subredditURL") === "") {
     config.update(
-      "URL",
+      "subredditURL",
       "https://www.reddit.com/r/memes/new.json",
       ConfigurationTarget.Global
     );
@@ -64,15 +68,32 @@ async function activate(context) {
       const getOne = data[i];
       if (data[i] <= data[data.length - 1]) {
         // Display a webview tab to the user
-        const panel = window.createWebviewPanel(
-          "memedose",
-          "Just for Laughs",
-          ViewColumn.One,
-          {} // Webview options. More on these later.
-        );
+
+        if (panel) {
+          // If we already have a panel, show it in the target column
+          panel.reveal();
+        } else {
+          // Otherwise, create a new panel
+          panel = window.createWebviewPanel(
+            "memedose",
+            "Just for Laughs",
+            ViewColumn.One,
+            {} // Webview options. More on these later.
+          );
+        }
 
         //Favicon
-        panel.iconPath = Uri.joinPath(context.extensionUri, "", "images/logo.png");
+        panel.iconPath = Uri.joinPath(
+          context.extensionUri,
+          "",
+          "images/logo.png"
+        );
+
+        // Handle the webview being closed
+        panel.onDidDispose(() => {
+          panel = undefined;
+        });
+
         //The actual webview that is shown to the user
         panel.webview.html = `<!DOCTYPE html>
       <html lang="en">
@@ -115,7 +136,7 @@ async function activate(context) {
       </html>`;
         i++;
       } else {
-        await window.showInformationMessage("Restarting..count.");
+        await window.showInformationMessage("Restart!");
         i = 0;
       }
     }
@@ -124,8 +145,11 @@ async function activate(context) {
   let getSetURL = commands.registerCommand(
     "justforlaughs.ext.getsetURL",
     async function () {
-      if (url !== "") {
-        await window.showInformationMessage("Your current url ", url);
+      if (config.has("subredditURL") && config.get("subredditURL") !== "") {
+        let url = await config.get("subredditURL");
+        if (url) {
+          await window.showInformationMessage("Your current url ", url);
+        }
       }
     }
   );
@@ -140,19 +164,21 @@ async function activate(context) {
           })
           .then((val) => {
             if (val) {
-              const config = workspace.getConfiguration("justforlaughs.ext");
+              const config = workspace.getConfiguration(
+                "justforlaughs.ext",
+                ConfigurationTarget.Global
+              );
               //In case if in settings.json justforlaughs.get.URL: "",set to default url
               //And if URL text field is empty and Enter key pressed,set to default url
-              if (config.has("subredditURL") && config.get("subredditURL") === "") {
-                config.update(
-                  "URL",
-                  "https://www.reddit.com/r/memes/new.json",
-                  ConfigurationTarget.Global
-                );
+              if (
+                config.has("subredditURL") &&
+                config.get("subredditURL") !== ""
+              ) {
+                config.update("subredditURL", val, ConfigurationTarget.Global);
                 window.showInformationMessage("Subreddit updated to " + val);
               }
             } else {
-              //Update nothing;ESC key pressed
+              window.showInformationMessage("Cancelled!");
             }
           });
       }
