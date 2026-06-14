@@ -11,37 +11,36 @@
 </p>
 
 > Logo by u/RamenFish195
->
-> > Available checkout this for [api & node package](https://github.com/jayantur13/yo-memes-jokes)
 
 ## Features
 
 - Memes based on set reddit (using webviews)
 - In command palette type:
   - `Just For Laughs: Meme` to get a meme
-  - `Just For Laughs: Set current URL` to update subreddit URL
-  - `Just For Laughs: Get current URL` to get current set subreddit URL
+  - `Just For Laughs: Change Subreddit` to update subreddit 
+  - `Just For Laughs: Show Settings` to see current set subreddit and meme count
+  - `Just For Laughs: Change Meme Count` to display those number of memes
 - You may use keybinding Ctrl+P to get a meme (changeable)
-
-> Demo
-> <img src="https://i.ibb.co/dGjh04B/demo.gif" alt="My cool logo"/>
 
 ## Extension Settings
 
-This extension contributes the following settings (`settings.json`):
+This extension has the following settings (`Inside Settings->Extensions->Just For Laughs`):
 
-- `justforlaughs.ext.subredditURL`: Set `subredditURL` to a valid [subreddit url](https://github.com/jayantur13/yo-memes-jokes#usageexamples).
+- `justforlaughs.ext.subreddit`: Set `subreddit` to a valid name that exists
+- `justforlaughs.ext.count`: Set `count` between 1-50 to display that number of memes
+   (Min. 1, Max. 50 and Default. 20)
 
-## Humble Note
+## Note
 
-Restart the extension for changes to take effect or use `Developer: Reload Window`
+If changes doesn't take effect please restart the extension for changes to take effect or use `Developer: Reload Window`
 
 ## Latest Releases
 
-| Version |   Date   |       Changelog |
-| ------- | :------: | --------------: |
-| 0.0.2   | 18-02-23 | Patched Version |
-| 0.0.1   | 10-01-23 | Initial Release |
+| Version |  Changelog      |
+| ------- | :-------------: |
+| 1.0.0   | [New Meme API](https://meme-api.com/)         |
+| 0.0.2   | Patched Version |
+| 0.0.1   | Initial Release |
 
 ## Changelog
 
@@ -57,7 +56,7 @@ Please adhere to this project's [Code Of Conduct](https://github.com/jayantur13/
 
 ## Issues
 
-- Write tests the ones present here sometimes fail (Contribute!)
+- None, yet (Found any ? Report on GitHub)
 
 ## Support the project
 
@@ -67,4 +66,4 @@ Want to support? Just [Sponsor me](https://github.com/sponsors/jayantur13).
 
 This project/extension is licensed under [MIT License](https://github.com/jayantur13/just-for-laughs-vsc-extension/blob/master/LICENSE)
 
-**Enjoy!**
+**Enjoy the memes**

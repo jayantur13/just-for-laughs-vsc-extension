@@ -13,40 +13,65 @@ describe("Extension Test Suite", () => {
   vscode.window.showInformationMessage("Start tests");
 
   it("Extension should be present", () => {
-    assert.ok(vscode.extensions.getExtension("Jayant Navrange.justforlaughs"));
+    assert.ok(
+      vscode.extensions.getExtension(
+        "JayantNavrange.justforlaughs"
+      )
+    );
   });
 
-  it("Extension should become active", function () {
-    this.timeout(1 * 60 * 1000);
-    const pass = vscode.extensions
-      .getExtension("Jayant Navrange.justforlaughs")
-      .activate();
-    assert.ok(true, pass);
+  it("Extension should become active", async function () {
+    this.timeout(60000);
+
+    const ext = vscode.extensions.getExtension(
+      "JayantNavrange.justforlaughs"
+    );
+
+    await ext.activate();
+
+    assert.strictEqual(ext.isActive, true);
   });
 
-  test("Extension should register commands", async function () {
-    this.timeout(1 * 60 * 1000);
-    await vscode.commands.getCommands(true).then((commands) => {
-      return commands.filter((value) => {
-        value === "justforlaughs.ext.getmeme"
-          ? "justforlaughs.ext.getmeme"
-          : "No";
-        assert.equal("justforlaughs.ext.getmeme", "justforlaughs.ext.getmeme");
-      });
-    });
+  it("Extension should register commands", async () => {
+    const commands = await vscode.commands.getCommands(true);
+
+    assert.ok(
+      commands.includes("justforlaughs.ext.getmeme")
+    );
+
+    assert.ok(
+      commands.includes("justforlaughs.ext.getsettings")
+    );
+
+    assert.ok(
+      commands.includes("justforlaughs.ext.changesubreddit")
+    );
+
+    assert.ok(
+      commands.includes("justforlaughs.ext.changecount")
+    );
   });
 
-  it("Extension: Test get meme url", async () => {
-    const config = vscode.workspace.getConfiguration("justforlaughs.ext");
-    let url = await config.get("subredditURL");
-    assert.ok(url === "" ? "https://www.reddit.com/r/memes/new.json" : url);
-  });
-
-  it("Extension: Test api for response", async function () {
+  it("API should return memes", async function () {
     this.timeout(10000);
-    const res = await api("https://www.reddit.com/r/memes/new.json?limit=10");
-    const data = res.children;
-    assert.equal(10, data.length);
+
+    const res = await api("memes", 20);
+
+    assert.ok(res);
+    assert.ok(Array.isArray(res.memes));
+    assert.ok(res.memes.length > 0);
+  });
+
+  it("API should return valid meme objects", async function () {
+    this.timeout(10000);
+
+    const res = await api("memes", 5);
+
+    const meme = res.memes[0];
+
+    assert.ok(meme.title);
+    assert.ok(meme.author);
+    assert.ok(meme.url);
   });
 
   it("Extension should become deactive", () => {

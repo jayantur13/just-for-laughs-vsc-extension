@@ -1,5 +1,3 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 const {
   workspace,
   ConfigurationTarget,
@@ -10,186 +8,205 @@ const {
 } = require("vscode");
 const { api } = require("./api");
 let i = 0;
+let data = []; // Initialize as an empty array safely
 let panel;
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+async function loadMemes() {
+  const config = workspace.getConfiguration("justforlaughs.ext");
+
+  const subreddit = config.get("subreddit", "memes");
+  const count = config.get("count", 20);
+
+  try {
+    const res = await api(subreddit, count);
+
+    if (!res.memes || res.memes.length === 0) {
+      window.showErrorMessage(
+        `No memes found for subreddit '${subreddit}'`
+      );
+      return false;
+    }
+
+    data = res.memes.map((meme, index) => ({
+      id: index,
+      author: meme.author,
+      title: meme.title,
+      url: meme.url
+    }));
+
+    i = 0;
+
+    return true;
+  } catch (error) {
+    window.showErrorMessage(
+      `Failed to load memes: ${error.message}`
+    );
+    return false;
+  }
+}
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 async function activate(context) {
-  const config = workspace.getConfiguration(
-    "justforlaughs.ext",
-    ConfigurationTarget.Global
-  );
-  //In case if justforlaughs.get.subredditURL: "" set it to default one
-  if (config.has("subredditURL") && config.get("subredditURL") === "") {
-    config.update(
-      "subredditURL",
-      "https://www.reddit.com/r/memes/new.json",
-      ConfigurationTarget.Global
-    );
-  }
-  let url = await config.get("subredditURL");
-  let res = await api(url);
-  let data = res.children
-    .filter((item) => {
-      return item.data.post_hint === "image";
-    })
-    .map((el, index) => {
-      let id = index;
-      let author = el.data.author;
-      let title = el.data.title;
-      let type = el.data.post_hint;
-      let url = el.data.url_overridden_by_dest;
+  const config = workspace.getConfiguration("justforlaughs.ext");
 
-      return {
-        "id": id,
-        "author": author,
-        "title": title === undefined ? "Unreadable/Missing title" : title,
-        "type": type,
-        "url": url,
-      };
-    });
+  await loadMemes();
 
-  // Use the console to output diagnostic information (console.log) and errors (console.error)
-  // This line of code will only be executed once when your extension is activated
-  // console.log(url);
-
-  // The command has been defined in the package.json file
-  // Now provide the implementation of the command with  registerCommand
-  // The commandId parameter must match the command field in package.json
+  // Register commands safely regardless of API status
   let disposable = commands.registerCommand(
     "justforlaughs.ext.getmeme",
     async function () {
-      // The code you place here will be executed every time your command is executed
-      if (data == null) return;
-      const getOne = data[i];
-      if (data[i] <= data[data.length - 1]) {
-        // Display a webview tab to the user
+      if (!data || data.length === 0) {
+        window.showWarningMessage("No meme data found. Check your URL or network connection.");
+        return;
+      }
 
-        if (panel) {
-          // If we already have a panel, show it in the target column
-          panel.reveal();
-        } else {
-          // Otherwise, create a new panel
-          panel = window.createWebviewPanel(
-            "memedose",
-            "Just for Laughs",
-            ViewColumn.One,
-            {} // Webview options. More on these later.
-          );
+      if (i >= data.length) {
+        const success = await loadMemes();
+
+        if (!success) {
+          return;
         }
 
-        //Favicon
-        panel.iconPath = Uri.joinPath(
-          context.extensionUri,
-          "",
-          "images/logo.png"
+        window.showInformationMessage(
+          "Loaded a fresh batch of memes!"
         );
+      }
 
-        // Handle the webview being closed
-        panel.onDidDispose(() => {
-          panel = undefined;
-        });
+      const getOne = data[i];
 
-        //The actual webview that is shown to the user
-        panel.webview.html = `<!DOCTYPE html>
+      if (panel) {
+        panel.reveal();
+      } else {
+        panel = window.createWebviewPanel(
+          "memedose",
+          "Just for Laughs",
+          ViewColumn.One,
+          {}
+        );
+      }
+
+      panel.iconPath = Uri.joinPath(
+        context.extensionUri,
+        "",
+        "images/logo.png"
+      );
+
+      panel.onDidDispose(() => {
+        panel = undefined;
+      });
+
+      panel.webview.html = `<!DOCTYPE html>
       <html lang="en">
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Meme Dose</title>
       <style>
-      body.vscode-light {
-        color: black;
-      }
-      
-      body.vscode-dark {
-        color: white;
-      }
-      
-      body.vscode-high-contrast {
-        color: red;
-      }
-      .content h3 {
-        margin: auto;
-        width: 50%;
-        text-align: center;
-        padding: 10px;
-      }
-      .content img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-      }
+      body.vscode-light { color: black; }
+      body.vscode-dark { color: white; }
+      body.vscode-high-contrast { color: red; }
+      .content h3 { margin: auto; width: 50%; text-align: center; padding: 10px; }
+      .content img { display: block; margin-left: auto; margin-right: auto; }
       </style>
       </head>
       <body>
       <div class="content">
-      ${`<h3>${getOne.title} - ${getOne.author}</h3>   
-      <img src=${getOne.url} width="500" height="400"/>
-      <h3>${i + 1}/${data.length}</h3>`}
+      <h3>${getOne.title} - ${getOne.author}</h3>   
+      <img src="${getOne.url}" width="500" height="400"/>
       </div>
       </body>
       </html>`;
-        i++;
+      i++;
+
+    }
+  );
+
+  let getSettings = commands.registerCommand(
+    "justforlaughs.ext.getsettings",
+    async function () {
+
+      const config = workspace.getConfiguration("justforlaughs.ext");
+
+      const subreddit = config.get("subreddit", "memes");
+      const count = config.get("count", 20);
+
+      window.showInformationMessage(
+        `Subreddit: ${subreddit} | Count: ${count}`
+      );
+    }
+  );
+
+  let setSubReddit = commands.registerCommand(
+    "justforlaughs.ext.changesubreddit",
+    async function () {
+      const config = workspace.getConfiguration("justforlaughs.ext");
+
+      const subreddit = await window.showInputBox({
+        prompt: "Enter subreddit name",
+        value: config.get("subreddit", "memes")
+      });
+
+      if (subreddit) {
+        await config.update(
+          "subreddit",
+          subreddit,
+          ConfigurationTarget.Global
+        );
+        await loadMemes();
+        window.showInformationMessage(
+          `Subreddit updated to ${subreddit}`
+        );
       } else {
-        await window.showInformationMessage("Restart!");
-        i = 0;
+        window.showInformationMessage("Cancelled!");
       }
-    }
-  );
+    });
 
-  let getSetURL = commands.registerCommand(
-    "justforlaughs.ext.getsetURL",
+  let setResultCount = commands.registerCommand(
+    "justforlaughs.ext.changecount",
     async function () {
-      if (config.has("subredditURL") && config.get("subredditURL") !== "") {
-        let url = await config.get("subredditURL");
-        if (url) {
-          await window.showInformationMessage("Your current url ", url);
+
+      const config = workspace.getConfiguration("justforlaughs.ext");
+
+      const count = await window.showInputBox({
+        prompt: "Number of memes (1-50)",
+        value: String(config.get("count", 20))
+      });
+
+      const num = Number(count);
+
+      if (num) {
+        if (num >= 1 && num <= 50) {
+
+          await config.update(
+            "count",
+            num,
+            ConfigurationTarget.Global
+          );
+
+          await loadMemes();
+
+          window.showInformationMessage(
+            `Count updated to ${num}`
+          );
+
+        } else {
+          window.showErrorMessage(
+            "Count must be between 1 and 50"
+          );
         }
+      } else {
+        window.showInformationMessage("Cancelled!");
       }
     }
   );
 
-  let setMyURL = commands.registerCommand(
-    "justforlaughs.ext.setmyURL",
-    async function () {
-      if (url) {
-        await window
-          .showInputBox({
-            placeHolder: url,
-          })
-          .then((val) => {
-            if (val) {
-              const config = workspace.getConfiguration(
-                "justforlaughs.ext",
-                ConfigurationTarget.Global
-              );
-              //In case if in settings.json justforlaughs.get.URL: "",set to default url
-              //And if URL text field is empty and Enter key pressed,set to default url
-              if (
-                config.has("subredditURL") &&
-                config.get("subredditURL") !== ""
-              ) {
-                config.update("subredditURL", val, ConfigurationTarget.Global);
-                window.showInformationMessage("Subreddit updated to " + val);
-              }
-            } else {
-              window.showInformationMessage("Cancelled!");
-            }
-          });
-      }
-    }
-  );
 
-  context.subscriptions.push(disposable, getSetURL, setMyURL);
+  context.subscriptions.push(disposable, getSettings, setSubReddit, setResultCount);
 }
 
-// This method is called when your extension is deactivated
-function deactivate() {}
+function deactivate() { }
 
 module.exports = {
   activate,

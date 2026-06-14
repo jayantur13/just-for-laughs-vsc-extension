@@ -2,10 +2,10 @@
   "name": "justforlaughs",
   "displayName": "Just For Laughs",
   "publisher": "JayantNavrange",
-  "description": "A slice of fun from reddit",
-  "version": "0.0.2",
+  "description": "A slice of fun you need",
+  "version": "1.0.0",
   "engines": {
-    "vscode": "^1.75.0"
+    "vscode": "^1.100.0"
   },
   "author": {
     "name": "Jayant Navrange",
@@ -31,8 +31,7 @@
     "vsc-extension",
     "memes",
     "jokes",
-    "reddit",
-    "subreddit"
+    "humor"
   ],
   "preview": false,
   "galleryBanner": {
@@ -42,19 +41,22 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:justforlaughs.get.meme"
-  ],
   "main": "main/extension.js",
   "contributes": {
     "configuration": {
       "title": "Just For Laughs",
       "properties": {
-        "justforlaughs.ext.subredditURL": {
+        "justforlaughs.ext.subreddit": {
           "type": "string",
-          "scope": "window",
-          "default": "https://www.reddit.com/r/memes/new.json",
-          "markdownDescription": "Set a custom subreddit url and make sure that it has json data (images and gifs). Refer [readme](https://github.com/jayantur13/just-for-laughs-vsc-extension) for example. Then restart extension using Developer: Reload Window from Command Palette"
+          "default": "memes",
+          "markdownDescription": "Subreddit to fetch memes from."
+        },
+        "justforlaughs.ext.count": {
+          "type": "number",
+          "default": 20,
+          "minimum": 1,
+          "maximum": 50,
+          "markdownDescription": "Number of memes to fetch."
         }
       }
     },
@@ -64,12 +66,16 @@
         "title": "Just For Laughs: Get Meme"
       },
       {
-        "command": "justforlaughs.ext.getsetURL",
-        "title": "Just For Laughs: Get current URL"
+        "command": "justforlaughs.ext.getsettings",
+        "title": "Just For Laughs: Show Settings"
       },
       {
-        "command": "justforlaughs.ext.setmyURL",
-        "title": "Just For Laughs: Set subreddit URL"
+        "command": "justforlaughs.ext.changesubreddit",
+        "title": "Just For Laughs: Change Subreddit"
+      },
+      {
+        "command": "justforlaughs.ext.changecount",
+        "title": "Just For Laughs: Change Meme Count"
       }
     ],
     "keybindings": [
@@ -82,24 +88,24 @@
     ]
   },
   "scripts": {
-    "lint": "eslint .",
-    "pretest": "npm run lint",
     "test": "node ./test/runTest.js",
     "test-coverage": "nyc --reporter=html --reporter=text mocha"
   },
   "devDependencies": {
-    "@types/glob": "^8.0.1",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "18.14.0",
-    "@types/vscode": "^1.75.1",
-    "@vscode/test-electron": "^2.2.3",
-    "eslint": "^8.34.0",
-    "glob": "^8.1.0",
-    "mocha": "^10.2.0",
-    "nyc": "^15.1.0",
-    "typescript": "^4.9.5"
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^25.9.3",
+    "@types/vscode": "^1.120.0",
+    "@vscode/test-electron": "^3.0.0",
+    "glob": "^13.0.6",
+    "mocha": "^11.7.6",
+    "nyc": "^18.0.0",
+    "typescript": "^6.0.3"
   },
   "dependencies": {
-    "axios": "^1.3.3"
+    "axios": "^1.17.0"
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.5",
+    "diff": "^8.0.3"
   }
 }

@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.0.0 - _14.06.2026_
+
+**Release**
+
+- Migrated to Meme API
+- configurable subreddit, configurable meme count
+- automatic batch loading
+
 ## 0.0.2 - _18.02.2023_
 
 **Patched**
