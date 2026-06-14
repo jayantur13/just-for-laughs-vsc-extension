@@ -1,6 +1,6 @@
 # Contributing to project
 
-Before contributing also read [Code Of Conduct](https://github.com/jayantur13/just-for-laughs-vsc-extension/blob/master/CODE_OF_CONDUCT.md "Code Of Conduct").All types of input are welcome,whether it is -
+Before contributing also read [Code Of Conduct](https://github.com/jayantur13/just-for-laughs-vsc-extension/blob/main/CODE_OF_CONDUCT.md "Code Of Conduct").All types of input are welcome,whether it is -
 
 - To open a new issue.
 - Discussions.
@@ -14,7 +14,7 @@ Before contributing also read [Code Of Conduct](https://github.com/jayantur13/ju
 ## To contribute,follow the below steps -
 
 - Test your code thoroughly.
-- Fork and create your branch from master.
+- Fork and create your branch from main.
 - Update documentation or any other changes you made.
 - Lastly, make a pull request.
 
@@ -33,4 +33,4 @@ Use the template to create a feature request -
 
 # License
 
-By contributing, you agree that your contributions will be licensed under [MIT License](https://github.com/jayantur13/just-for-laughs-vsc-extension/blob/master/LICENSE "MIT License").
+By contributing, you agree that your contributions will be licensed under [MIT License](https://github.com/jayantur13/just-for-laughs-vsc-extension/blob/main/LICENSE "MIT License").

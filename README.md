@@ -44,15 +44,15 @@ If changes doesn't take effect please restart the extension for changes to take 
 
 ## Changelog
 
-See all the changes here in [Changelog](https://github.com/jayantur13/just-for-laughs-vsc-extension/blob/master/CHANGELOG.md)
+See all the changes here in [Changelog](https://github.com/jayantur13/just-for-laughs-vsc-extension/blob/main/CHANGELOG.md)
 
 ## Contributing
 
 Contributions are always welcome!
 
-See [Contributing.md](https://github.com/jayantur13/just-for-laughs-vsc-extension/blob/master/CONTRIBUTING.md) for ways to get started.
+See [Contributing.md](https://github.com/jayantur13/just-for-laughs-vsc-extension/blob/main/CONTRIBUTING.md) for ways to get started.
 
-Please adhere to this project's [Code Of Conduct](https://github.com/jayantur13/just-for-laughs-vsc-extension/blob/master/CODE_OF_CONDUCT.md).
+Please adhere to this project's [Code Of Conduct](https://github.com/jayantur13/just-for-laughs-vsc-extension/blob/main/CODE_OF_CONDUCT.md).
 
 ## Issues
 
@@ -64,6 +64,6 @@ Want to support? Just [Sponsor me](https://github.com/sponsors/jayantur13).
 
 ## License
 
-This project/extension is licensed under [MIT License](https://github.com/jayantur13/just-for-laughs-vsc-extension/blob/master/LICENSE)
+This project/extension is licensed under [MIT License](https://github.com/jayantur13/just-for-laughs-vsc-extension/blob/main/LICENSE)
 
 **Enjoy the memes**
