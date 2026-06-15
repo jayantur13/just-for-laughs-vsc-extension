@@ -39,7 +39,7 @@ async function loadMemes() {
     return true;
   } catch (error) {
     window.showErrorMessage(
-      `Failed to load memes: ${error.message}`
+      `Failed to load memes (Internet/API Offline): ${error.message}`
     );
     return false;
   }
@@ -66,6 +66,9 @@ async function activate(context) {
         const success = await loadMemes();
 
         if (!success) {
+          window.showInformationMessage(
+            "Error: There are some issues with the API"
+          );
           return;
         }
 

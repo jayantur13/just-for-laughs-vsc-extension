@@ -42,6 +42,8 @@ If changes doesn't take effect please restart the extension for changes to take 
 | 0.0.2   | Patched Version |
 | 0.0.1   | Initial Release |
 
+- Use old version 0.0.2 of the extension if it works for you
+
 ## Changelog
 
 See all the changes here in [Changelog](https://github.com/jayantur13/just-for-laughs-vsc-extension/blob/main/CHANGELOG.md)
@@ -56,7 +58,8 @@ Please adhere to this project's [Code Of Conduct](https://github.com/jayantur13/
 
 ## Issues
 
-- None, yet (Found any ? Report on GitHub)
+- Reddit not allowing access to their public API (shifted to other API)
+- If current implemented API doesn't work (Future plan: bring your own keys from Reddit or I'll have to close this project)
 
 ## Support the project
 
