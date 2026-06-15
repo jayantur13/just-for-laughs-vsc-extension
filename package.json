@@ -2,10 +2,10 @@
   "name": "justforlaughs",
   "displayName": "Just For Laughs",
   "publisher": "JayantNavrange",
-  "description": "A slice of fun you need",
+  "description": "Memes when you need",
   "version": "1.0.0",
   "engines": {
-    "vscode": "^1.100.0"
+    "vscode": "^1.120.0"
   },
   "author": {
     "name": "Jayant Navrange",
